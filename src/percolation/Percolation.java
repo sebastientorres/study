@@ -21,13 +21,13 @@ public class Percolation {
 
     }
 
-    public boolean isOpen(){
+    public boolean isOpen(int i, int j){
         boolean isOpen = false;
 
         return isOpen;
     }
 
-    public boolean isFull(){
+    public boolean isFull(int i, int j){
         boolean isFull = false;
 
         return isFull;
