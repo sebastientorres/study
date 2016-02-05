@@ -11,9 +11,7 @@ public class Percolation {
 
     public Percolation(int N){
 
-    }
-
-    public static void main(String[] args){
+        int[][] site = new int[N][N];
 
     }
 
@@ -38,6 +36,10 @@ public class Percolation {
         boolean doesPercolate = false;
 
         return doesPercolate;
+
+    }
+
+    public static void main(String[] args){
 
     }
 }
