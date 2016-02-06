@@ -1,14 +1,15 @@
 package percolation;
-
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+//
+//import edu.princeton.cs.algs4.StdRandom;
+//import edu.princeton.cs.algs4.StdStats;
+//import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
@@ -24,21 +25,39 @@ public class Percolation {
 
         // N is a horrible variable name
         int siteDimension = N;
+
+        if (siteDimension < 1){
+            throw new IllegalArgumentException("site size cannot be less than 1, you entered " + siteDimension);
+        }
+
         site = new int[siteDimension][siteDimension];
 
     }
 
     public void open(int i, int j){
 
+        validateInput(i, j);
+
+        if(!isOpen(i,j)){
+            site[i][j] = 1;
+        }
     }
 
     public boolean isOpen(int i, int j){
-        boolean isOpen = false;
 
-        return isOpen;
+        validateInput(i, j);
+
+        if(site[i][j] == 1){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public boolean isFull(int i, int j){
+
+        validateInput(i, j);
+
         boolean isFull = false;
 
         return isFull;
@@ -50,6 +69,12 @@ public class Percolation {
 
         return doesPercolate;
 
+    }
+
+    public void validateInput(int i, int j){
+        if( i < 1 || j < 1 || i > site.length || j > site.length){
+            throw new IndexOutOfBoundsException("Values must be 1 or greater, and " + site.length + " or less");
+        }
     }
 
     public static void main(String[] args){
@@ -67,16 +92,26 @@ public class Percolation {
             e.printStackTrace();
         }
 
-        int siteSize = Integer.valueOf(values.get(0));
+//        int siteSize = Integer.valueOf(values.get(0));
+        int siteSize = 3;
         values.remove(0);
 
         Percolation percolation = new Percolation(siteSize);
 
         printSite(percolation);
+        percolation.open(0, 0);
+        percolation.open(4, 3);
 
-        for(int i = 0; i < values.size(); i++){
-            System.out.println("values = " + values.get(i));
-        }
+    }
+
+    static HashMap<Integer, Integer> parseInputFile(List<String> values){
+
+        HashMap<Integer, Integer> unionOperations = new HashMap<Integer, Integer>();
+
+
+
+
+        return unionOperations;
 
     }
 
