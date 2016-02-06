@@ -38,14 +38,15 @@ public class Percolation {
 
         validateInput(i, j);
 
+        i -=1;
+        j -=1;
+
         if(!isOpen(i,j)){
             site[i][j] = 1;
         }
     }
 
     public boolean isOpen(int i, int j){
-
-        validateInput(i, j);
 
         if(site[i][j] == 1){
             return true;
@@ -72,8 +73,12 @@ public class Percolation {
     }
 
     public void validateInput(int i, int j){
-        if( i < 1 || j < 1 || i > site.length || j > site.length){
-            throw new IndexOutOfBoundsException("Values must be 1 or greater, and " + site.length + " or less");
+
+        if(i < 1 || j < 1){
+            throw new IndexOutOfBoundsException("can't be less than 1");
+        }
+        if (i > site.length || j > site.length){
+            throw new IndexOutOfBoundsException("can't be more than " + site.length);
         }
     }
 
@@ -99,16 +104,19 @@ public class Percolation {
         Percolation percolation = new Percolation(siteSize);
 
         printSite(percolation);
-        percolation.open(0, 0);
-        percolation.open(4, 3);
+
+        percolation.open(1,1);
+        System.out.println("is 1,1 open " + percolation.isOpen(1,1));
+        percolation.open(2,1);
+        percolation.open(3,1);
+
+        printSite(percolation);
 
     }
 
     static HashMap<Integer, Integer> parseInputFile(List<String> values){
 
         HashMap<Integer, Integer> unionOperations = new HashMap<Integer, Integer>();
-
-
 
 
         return unionOperations;
@@ -122,5 +130,6 @@ public class Percolation {
             }
             System.out.println();
         }
+        System.out.println();
     }
 }
