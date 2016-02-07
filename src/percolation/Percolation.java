@@ -1,88 +1,129 @@
 package percolation;
-//
-//import edu.princeton.cs.algs4.StdRandom;
-//import edu.princeton.cs.algs4.StdStats;
-//import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.io.FileDescriptor;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
 /**
  * Created by st on 04/02/16.
  */
-public class Percolation {
+public class Percolation extends WeightedQuickUnionUF{
 
-    int[][]site;
+    int numberOfSites;
+    int systemDimension;
+    int[][] system;
 
-    public Percolation(int N){
+    public Percolation(int N) {
+        super(N*N);
+        systemDimension = N;
+        numberOfSites = N*N;
+        system = new int[N][N];
+        initialiseSystem(N);
+    }
 
-        // N is a horrible variable name
-        int siteDimension = N;
-
-        if (siteDimension < 1){
-            throw new IllegalArgumentException("site size cannot be less than 1, you entered " + siteDimension);
+    private void initialiseSystem(int N){
+        int value = 1;
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                system[i][j]=0;
+                value++;
+            }
         }
-
-        site = new int[siteDimension][siteDimension];
-
     }
 
     public void open(int i, int j){
+        // Doing [i|j]-- to address off by 1.
+        i--;
+        j--;
 
-        validateInput(i, j);
+        checkBoundary(i,j);
 
-        i -=1;
-        j -=1;
-
-        if(!isOpen(i,j)){
-            site[i][j] = 1;
+        if ( !(i-1 < 0) || !(i+1 > systemDimension) || !(j-1 < 0) || !(j+1 > systemDimension)){
+            if(isOpen(i-1,j)){
+                union(i*j, i-1*j);
+            }
+            if(isOpen(i, j+1)){
+                union(i*j, i*j+1);
+            }
+            if(isOpen(i+1, j)){
+                union(i*j, i+1*j);
+            }
+            if(isOpen(i, j-1)){
+                union(i*j, i*j-1);
+            }
         }
+        system[i][j] = 1;
     }
 
     public boolean isOpen(int i, int j){
-
-        if(site[i][j] == 1){
+        if(system[i][j] == 1){
             return true;
-        } else{
+        }
+        else {
             return false;
         }
     }
 
     public boolean isFull(int i, int j){
-
-        validateInput(i, j);
-
         boolean isFull = false;
 
         return isFull;
     }
 
     public boolean percolates(){
-
-        boolean doesPercolate = false;
-
-        return doesPercolate;
-
+        for (int i = 0 ; i < systemDimension; i++){
+            for (int j = system.length - systemDimension; j < system.length ; j++){
+                if(isOpen(i, j)) {
+                    if (!connected(i, j)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
-    public void validateInput(int i, int j){
-
-        if(i < 1 || j < 1){
-            throw new IndexOutOfBoundsException("can't be less than 1");
+    private void checkBoundary(int i, int j){
+        if(i < 0 || j < 0){
+            throw new IndexOutOfBoundsException("i or j can't be less than 0");
         }
-        if (i > site.length || j > site.length){
-            throw new IndexOutOfBoundsException("can't be more than " + site.length);
+        if(i > systemDimension || j > systemDimension){
+            throw new IndexOutOfBoundsException("i or j can't be greater than " + systemDimension);
         }
     }
+
+    //    @Override
+    public boolean connected(int i, int j, int k, int l){
+        i--;
+        j--;
+        k--;
+        l--;
+        int p = i * j;
+        int q = k * l;
+        return connected(p , q);
+    }
+
+    private void printSystem() {
+
+        for (int i = 0; i < system.length; i++) {
+            for (int j = 0; j < system.length; j++) {
+                System.out.print(system[i][j] + "\t");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        System.out.println(find(20));
+    }
+
 
     public static void main(String[] args){
+
 
         String file = "/home/st/code/coursera/algosAndData/testData/percolation/input20.txt";
 
@@ -98,38 +139,20 @@ public class Percolation {
         }
 
 //        int siteSize = Integer.valueOf(values.get(0));
-        int siteSize = 3;
+        int siteSize = 10;
         values.remove(0);
 
         Percolation percolation = new Percolation(siteSize);
 
-        printSite(percolation);
-
+        percolation.open(2,2);
+        percolation.open(2,3);
         percolation.open(1,1);
-        System.out.println("is 1,1 open " + percolation.isOpen(1,1));
-        percolation.open(2,1);
-        percolation.open(3,1);
 
-        printSite(percolation);
-
-    }
-
-    static HashMap<Integer, Integer> parseInputFile(List<String> values){
-
-        HashMap<Integer, Integer> unionOperations = new HashMap<Integer, Integer>();
+        System.out.println(percolation.connected(2,2,2,3));
 
 
-        return unionOperations;
+        percolation.printSystem();
 
     }
 
-    static void printSite(Percolation percolation){
-        for (int i = 0; i < percolation.site.length; i++){
-            for (int j = 0; j < percolation.site.length; j++){
-                System.out.print(percolation.site[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
 }
