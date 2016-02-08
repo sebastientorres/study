@@ -42,19 +42,27 @@ public class Percolation extends WeightedQuickUnionUF{
         j--;
 
         checkBoundary(i,j);
-
-        if ( !(i-1 < 0) || !(i+1 > systemDimension) || !(j-1 < 0) || !(j+1 > systemDimension)){
+        if(!(i-1 < 0)){
             if(isOpen(i-1,j)){
-                union(i*j, i-1*j);
+                union(i*j, (i-1)*j);
             }
-            if(isOpen(i, j+1)){
-                union(i*j, i*j+1);
-            }
+        }
+
+        if(!(i+1 >= systemDimension)){
             if(isOpen(i+1, j)){
-                union(i*j, i+1*j);
+                union(i*j, (i+1)*j);
             }
+        }
+
+        if(!(j-1 < 0)){
             if(isOpen(i, j-1)){
-                union(i*j, i*j-1);
+                union(i*j, i*(j-1));
+            }
+        }
+
+        if ( !(j+1 >= systemDimension)){
+            if(isOpen(i, j+1)){
+                union(i*j, i*(j+1));
             }
         }
         system[i][j] = 1;
@@ -147,6 +155,10 @@ public class Percolation extends WeightedQuickUnionUF{
         percolation.open(2,2);
         percolation.open(2,3);
         percolation.open(1,1);
+        percolation.open(1,2);
+        percolation.open(10,1);
+        percolation.open(3,10);
+        percolation.open(10,10);
 
         System.out.println(percolation.connected(2,2,2,3));
 
