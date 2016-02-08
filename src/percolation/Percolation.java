@@ -129,13 +129,12 @@ public class Percolation extends WeightedQuickUnionUF{
     }
 
     private void printWquf(){
-        for (int i = 0; i < systemDimension; i++){
-            for (int j = 0; j < 10; j++){
-                System.out.print(this.find(i*j) + " ");
+        for(int p = 0; p < numberOfSites; p++){
+            System.out.print(find(p) + "\t");
+            if( ( p % 10 ) == 0){
+                System.out.println();
             }
-            System.out.println();
         }
-        System.out.println();
     }
 
 
@@ -174,7 +173,7 @@ public class Percolation extends WeightedQuickUnionUF{
         System.out.println(percolation.connected(9, 1, 10, 1));
 
         percolation.printSystem();
-percolation.printWquf();
+        percolation.printWquf();
     }
 
 }
