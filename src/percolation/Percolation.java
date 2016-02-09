@@ -89,12 +89,12 @@ public class Percolation extends WeightedQuickUnionUF{
             for (int j = system.length - systemDimension; j < system.length ; j++){
                 if(isOpen(i, j)) {
                     if (!connected(i, j)) {
-                        return false;
+                        return true;
                     }
                 }
             }
         }
-        return true;
+        return false;
     }
 
     private void checkBoundary(int i, int j){
@@ -155,12 +155,12 @@ public class Percolation extends WeightedQuickUnionUF{
             e.printStackTrace();
         }
 
-        int siteSize = 4;
+        int siteSize = 10;
         values.remove(0);
 
         Percolation percolation = new Percolation(siteSize);
 
-        while(percolation.percolates()){
+        while(!percolation.percolates()){
             Random pRand = new Random();
             Random qRand = new Random();
 
