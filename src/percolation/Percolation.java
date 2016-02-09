@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 /**
@@ -155,25 +156,30 @@ public class Percolation extends WeightedQuickUnionUF{
         }
 
 //        int siteSize = Integer.valueOf(values.get(0));
-        int siteSize = 10;
+        int siteSize = 4;
         values.remove(0);
 
         Percolation percolation = new Percolation(siteSize);
 
-        percolation.open(2,2);
-        percolation.open(2,3);
-        percolation.open(1,1);
-        percolation.open(1,2);
-        percolation.open(10,1);
-        percolation.open(3,10);
-        percolation.open(10,10);
-        percolation.open(9,1);
+        while(percolation.percolates()){
+            Random pRand = new Random();
+            Random qRand = new Random();
 
-        System.out.println(percolation.connected(2,2,2,3));
-        System.out.println(percolation.connected(9, 1, 10, 1));
+            int p = pRand.nextInt(siteSize);
+            int q = qRand.nextInt(siteSize);
 
+            if(p == 0){
+                p++;
+            }
+            if (q == 0){
+                q++;
+            }
+            percolation.open(p, q);
+            System.out.println("p & q = " + p + "," + q);
+            percolation.printSystem();
+        }
         percolation.printSystem();
-        percolation.printWquf();
+
     }
 
 }
