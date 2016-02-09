@@ -155,12 +155,13 @@ public class Percolation extends WeightedQuickUnionUF{
             e.printStackTrace();
         }
 
-        int siteSize = 10;
+        int siteSize = 4;
         values.remove(0);
 
         Percolation percolation = new Percolation(siteSize);
 
         while(!percolation.percolates()){
+
             Random pRand = new Random();
             Random qRand = new Random();
 
