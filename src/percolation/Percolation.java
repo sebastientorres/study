@@ -177,7 +177,6 @@ public class Percolation extends WeightedQuickUnionUF{
             System.out.println("p & q = " + p + "," + q);
             percolation.printSystem();
         }
-        percolation.printSystem();
 
     }
 
