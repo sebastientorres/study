@@ -45,25 +45,25 @@ public class Percolation extends WeightedQuickUnionUF{
         checkBoundary(i,j);
         if(!(i-1 < 0)){
             if(isOpen(i-1,j)){
-                union(i*j, (i-1)*j);
+                union(i*j, (i-1)*j); // this bit doesn't work
             }
         }
 
         if(!(i+1 >= systemDimension)){
             if(isOpen(i+1, j)){
-                union(i*j, (i+1)*j);
+                union(i*j, (i+1)*j); // his bit doesn't work
             }
         }
 
         if(!(j-1 < 0)){
             if(isOpen(i, j-1)){
-                union(i*j, i*(j-1));
+                union(i*j, i*(j-1)); // this bit doesn't work
             }
         }
 
         if ( !(j+1 >= systemDimension)){
             if(isOpen(i, j+1)){
-                union(i*j, i*(j+1));
+                union(i*j, i*(j+1)); // this bit doesn't work
             }
         }
         system[i][j] = 1;
@@ -84,13 +84,17 @@ public class Percolation extends WeightedQuickUnionUF{
         return isFull;
     }
 
+    // i and j are the coordinates of the system as a grid (2d array), not the system as a
+    // 1d array - we need to translate \ convert 2d to 1d...
+    // i and j need to become p and q...
+
     public boolean percolates(){
         for (int i = 0 ; i < systemDimension; i++){
-            for (int j = system.length - systemDimension; j < system.length ; j++){
-                if(isOpen(i, j)) {
-                    if (!connected(i, j)) {
+            for (int j = (numberOfSites - systemDimension)-1; j < numberOfSites ; j++){
+//                if(isOpen(i, j)) {
+                    if (connected(i, j)) {
                         return true;
-                    }
+//                    }
                 }
             }
         }
@@ -160,24 +164,41 @@ public class Percolation extends WeightedQuickUnionUF{
 
         Percolation percolation = new Percolation(siteSize);
 
-        while(!percolation.percolates()){
+//        while(!percolation.percolates()){
+//
+//            Random pRand = new Random();
+//            Random qRand = new Random();
+//
+//            int p = pRand.nextInt(siteSize);
+//            int q = qRand.nextInt(siteSize);
+//
+//            if(p == 0){
+//                p++;
+//            }
+//            if (q == 0){
+//                q++;
+//            }
+//            percolation.open(p, q);
+//            System.out.println("p & q = " + p + "," + q);
+//            percolation.printSystem();
+//        }
 
-            Random pRand = new Random();
-            Random qRand = new Random();
+        percolation.open(1,1);
+        percolation.printSystem();
+        System.out.println("percolates: " + percolation.percolates());
+        System.out.println("percolation.connected(4,1) = " + percolation.connected(4,1));
 
-            int p = pRand.nextInt(siteSize);
-            int q = qRand.nextInt(siteSize);
+        percolation.open(2,1);
+        percolation.printSystem();
+        System.out.println("percolates: " + percolation.percolates());
+        System.out.println("percolation.connected(4,1) = " + percolation.connected(4,1));
 
-            if(p == 0){
-                p++;
-            }
-            if (q == 0){
-                q++;
-            }
-            percolation.open(p, q);
-            System.out.println("p & q = " + p + "," + q);
-            percolation.printSystem();
-        }
+        percolation.open(3,1);
+        percolation.open(4,1);
+        percolation.printSystem();
+        System.out.println("percolates: " + percolation.percolates());
+        System.out.println("percolation.connected(8,12) = " + percolation.connected(8,12));
+
 
     }
 
