@@ -18,11 +18,13 @@ public class Percolation extends WeightedQuickUnionUF{
     int numberOfSites;
     int systemDimension;
     int[][] system;
+    int numberOfOpenSites;
 
     public Percolation(int N) {
         super(N*N);
         systemDimension = N;
         numberOfSites = N*N;
+        numberOfOpenSites = 0;
         system = new int[N][N];
         initialiseSystem(N);
     }
@@ -70,6 +72,7 @@ public class Percolation extends WeightedQuickUnionUF{
         }
 
         system[i][j] = 1;
+        numberOfOpenSites++;
 
     }
 
@@ -187,8 +190,15 @@ public class Percolation extends WeightedQuickUnionUF{
         percolation.printSystem();
         percolation.printWquf();
         System.out.println("\npercolation.percolates = " + percolation.percolates());
+        System.out.println("percolation.numberOfOpensites = " + percolation.numberOfOpenSites);
+        System.out.println("percolation.numberOfSites = " + percolation.numberOfSites);
+        System.out.println("Open sites percentage = " + percolation.getOpenSitePercentage() );
 
+    }
 
+    public double getOpenSitePercentage(){
+        double result = Double.valueOf(numberOfOpenSites) / Double.valueOf(numberOfSites);
+        return result;
     }
 
 }
