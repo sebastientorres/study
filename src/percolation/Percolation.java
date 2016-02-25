@@ -43,30 +43,34 @@ public class Percolation extends WeightedQuickUnionUF{
         j--;
 
         checkBoundary(i,j);
+        int p = (systemDimension * i) + j;
+
         if(!(i-1 < 0)){
             if(isOpen(i-1,j)){
-                union(i*j, (i-1)*j); // this bit doesn't work
+                union( p, ((systemDimension * (i-1)) +j ));
             }
         }
 
         if(!(i+1 >= systemDimension)){
             if(isOpen(i+1, j)){
-                union(i*j, (i+1)*j); // his bit doesn't work
+                union( p, (systemDimension * (i+1)) + j);
             }
         }
 
         if(!(j-1 < 0)){
             if(isOpen(i, j-1)){
-                union(i*j, i*(j-1)); // this bit doesn't work
+                union(p, (systemDimension * i) + (j-1));
             }
         }
 
         if ( !(j+1 >= systemDimension)){
             if(isOpen(i, j+1)){
-                union(i*j, i*(j+1)); // this bit doesn't work
+                union(p, (systemDimension * i) + (j+1));
             }
         }
+
         system[i][j] = 1;
+
     }
 
     public boolean isOpen(int i, int j){
@@ -86,15 +90,13 @@ public class Percolation extends WeightedQuickUnionUF{
 
     // i and j are the coordinates of the system as a grid (2d array), not the system as a
     // 1d array - we need to translate \ convert 2d to 1d...
-    // i and j need to become p and q...
+    // i and j need to become p and q at the top and bottom of the system
 
     public boolean percolates(){
         for (int i = 0 ; i < systemDimension; i++){
             for (int j = (numberOfSites - systemDimension)-1; j < numberOfSites ; j++){
-//                if(isOpen(i, j)) {
                     if (connected(i, j)) {
                         return true;
-//                    }
                 }
             }
         }
@@ -135,10 +137,11 @@ public class Percolation extends WeightedQuickUnionUF{
 
     private void printWquf(){
         for(int p = 0; p < numberOfSites; p++){
+            System.out.print(p + "\t");
+        }
+        System.out.println();
+        for(int p = 0; p < numberOfSites; p++){
             System.out.print(find(p) + "\t");
-            if( ( p % 10 ) == 0){
-                System.out.println();
-            }
         }
     }
 
@@ -159,45 +162,31 @@ public class Percolation extends WeightedQuickUnionUF{
             e.printStackTrace();
         }
 
-        int siteSize = 4;
+        int siteSize = 20;
         values.remove(0);
 
         Percolation percolation = new Percolation(siteSize);
 
-//        while(!percolation.percolates()){
-//
-//            Random pRand = new Random();
-//            Random qRand = new Random();
-//
-//            int p = pRand.nextInt(siteSize);
-//            int q = qRand.nextInt(siteSize);
-//
-//            if(p == 0){
-//                p++;
-//            }
-//            if (q == 0){
-//                q++;
-//            }
-//            percolation.open(p, q);
-//            System.out.println("p & q = " + p + "," + q);
-//            percolation.printSystem();
-//        }
+        while(!percolation.percolates()){
+            Random pRand = new Random();
+            Random qRand = new Random();
 
-        percolation.open(1,1);
-        percolation.printSystem();
-        System.out.println("percolates: " + percolation.percolates());
-        System.out.println("percolation.connected(4,1) = " + percolation.connected(4,1));
+            int p = pRand.nextInt(siteSize+1);
+            int q = qRand.nextInt(siteSize+1);
 
-        percolation.open(2,1);
-        percolation.printSystem();
-        System.out.println("percolates: " + percolation.percolates());
-        System.out.println("percolation.connected(4,1) = " + percolation.connected(4,1));
+            if(p == 0){
+                p++;
+            }
+            if (q == 0){
+                q++;
+            }
+            percolation.open(p, q);
+            System.out.println("p = " + p + " q = " + q);
+        }
 
-        percolation.open(3,1);
-        percolation.open(4,1);
         percolation.printSystem();
-        System.out.println("percolates: " + percolation.percolates());
-        System.out.println("percolation.connected(8,12) = " + percolation.connected(8,12));
+        percolation.printWquf();
+        System.out.println("\npercolation.percolates = " + percolation.percolates());
 
 
     }
