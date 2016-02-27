@@ -1,5 +1,6 @@
 package percolation;
 
+import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.io.IOException;
@@ -171,22 +172,7 @@ public class Percolation extends WeightedQuickUnionUF{
 
     public static void main(String[] args){
 
-
-        String file = "/home/st/code/coursera/algosAndData/testData/percolation/input20.txt";
-
-        List<String> values = new ArrayList<String>();
-
-        try (Stream<String> stream = Files.lines(Paths.get(file))){
-            for (Object value : stream.toArray()){
-                values.add(value.toString());
-            }
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        int siteSize = 20;
-        values.remove(0);
+        int siteSize = 100;
 
         Percolation percolation = new Percolation(siteSize);
 
@@ -204,11 +190,8 @@ public class Percolation extends WeightedQuickUnionUF{
                 q++;
             }
             percolation.open(p, q);
-            System.out.println("p = " + p + " q = " + q);
         }
 
-
-        percolation.printSystem();
         System.out.println("\npercolation.percolates = " + percolation.percolates());
         System.out.println("percolation.numberOfOpensites = " + percolation.getNumberOfOpenSites());
         System.out.println("percolation.numberOfSites = " + percolation.numberOfSites);
