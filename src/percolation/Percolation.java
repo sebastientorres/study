@@ -14,15 +14,19 @@ import java.util.stream.Stream;
 /**
  * Created by st on 04/02/16.
  */
-public class Percolation extends WeightedQuickUnionUF{
+public class Percolation {
 
-    int numberOfSites;
-    int systemDimension;
-    int[][] system;
-    int numberOfOpenSites;
+    private int numberOfSites;
+    private int systemDimension;
+    private int[][] system;
+    private int numberOfOpenSites;
+
+    WeightedQuickUnionUF wquf;
 
     public Percolation(int N) {
-        super(N*N);
+
+        wquf = new WeightedQuickUnionUF(N*N);
+
         systemDimension = N;
         numberOfSites = N*N;
         numberOfOpenSites = 0;
@@ -50,25 +54,25 @@ public class Percolation extends WeightedQuickUnionUF{
 
         if(!(i-1 < 0)){
             if(isOpen(i-1,j)){
-                union( p, ((systemDimension * (i-1)) +j ));
+                wquf.union( p, ((systemDimension * (i-1)) +j ));
             }
         }
 
         if(!(i+1 >= systemDimension)){
             if(isOpen(i+1, j)){
-                union( p, (systemDimension * (i+1)) + j);
+                wquf.union( p, (systemDimension * (i+1)) + j);
             }
         }
 
         if(!(j-1 < 0)){
             if(isOpen(i, j-1)){
-                union(p, (systemDimension * i) + (j-1));
+                wquf.union(p, (systemDimension * i) + (j-1));
             }
         }
 
         if ( !(j+1 >= systemDimension)){
             if(isOpen(i, j+1)){
-                union(p, (systemDimension * i) + (j+1));
+                wquf.union(p, (systemDimension * i) + (j+1));
             }
         }
 
@@ -98,7 +102,7 @@ public class Percolation extends WeightedQuickUnionUF{
     public boolean percolates(){
         for (int i = 0 ; i < systemDimension; i++){
             for (int j = (numberOfSites - systemDimension)-1; j < numberOfSites ; j++){
-                    if (connected(i, j)) {
+                    if (wquf.connected(i, j)) {
                         return true;
                 }
             }
@@ -123,7 +127,7 @@ public class Percolation extends WeightedQuickUnionUF{
         l--;
         int p = i * j;
         int q = k * l;
-        return connected(p , q);
+        return wquf.connected(p , q);
     }
 
     private void printSystem() {
@@ -144,11 +148,11 @@ public class Percolation extends WeightedQuickUnionUF{
         }
         System.out.println();
         for(int p = 0; p < numberOfSites; p++){
-            System.out.print(find(p) + "\t");
+            System.out.print(wquf.find(p) + "\t");
         }
     }
 
-    public double getNumberOfOpenSites(){
+    private double getNumberOfOpenSites(){
         if(numberOfOpenSites > 0){
             return numberOfOpenSites;
         } else {
@@ -163,7 +167,7 @@ public class Percolation extends WeightedQuickUnionUF{
         }
     }
 
-    public double getOpenSitePercentage(){
+    private double getOpenSitePercentage(){
 
 
         double result = Double.valueOf(getNumberOfOpenSites()) / Double.valueOf(numberOfSites);
@@ -191,11 +195,6 @@ public class Percolation extends WeightedQuickUnionUF{
             }
             percolation.open(p, q);
         }
-
-        System.out.println("\npercolation.percolates = " + percolation.percolates());
-        System.out.println("percolation.numberOfOpensites = " + percolation.getNumberOfOpenSites());
-        System.out.println("percolation.numberOfSites = " + percolation.numberOfSites);
-        System.out.println("Open sites percentage = " + percolation.getOpenSitePercentage() );
 
     }
 
