@@ -86,10 +86,12 @@ public class Percolation {
     }
 
     public boolean isOpen(int i, int j) {
+        checkBoundary(i , j);
         return system[i][j] == 1;
     }
 
     public boolean isFull(int i, int j) {
+        checkBoundary(i , j);
         i--;
         j--;
 
