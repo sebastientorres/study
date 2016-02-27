@@ -17,6 +17,10 @@ public class Percolation {
 
     public Percolation(int N) {
 
+        if ( N < =0 ) {
+            throw new IllegalArgumentException("Site dimension can't be 0 or less.");
+        }
+
         wquf = new WeightedQuickUnionUF(N*N);
 
         systemDimension = N;
@@ -27,53 +31,53 @@ public class Percolation {
     }
 
     private void initialiseSystem(int N) {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        for (int i = 0; i < N; i ++) {
+            for (int j = 0; j < N; j ++) {
                 system[i][j] = 0;
             }
         }
     }
     //    @Override
     private boolean connected(int i, int j, int k, int l) {
-        i--;
-        j--;
-        k--;
-        l--;
+        i --;
+        j --;
+        k --;
+        l --;
         int p = (i * systemDimension) + j;
         int q = (k * systemDimension) + l;
         return wquf.connected(p , q);
     }
     public void open(int i, int j) {
 
-        checkBoundary(i,j);
+        checkBoundary(i , j);
 
         // Doing [i|j]-- to address off by 1.
-        i--;
-        j--;
+        i --;
+        j --;
 
         int p = (systemDimension * i) + j;
 
-        if (!(i-1 < 0)){
-            if (isOpen(i-1,j)) {
-                wquf.union( p, ((systemDimension * (i-1)) +j ));
+        if (!(i-1 < 0)) {
+            if (isOpen(i-1 , j)) {
+                wquf.union(p , ((systemDimension * (i-1)) +j ));
             }
         }
 
         if (!(i+1 >= systemDimension)) {
             if (isOpen(i+1, j)) {
-                wquf.union( p, (systemDimension * (i+1)) + j);
+                wquf.union(p , (systemDimension * (i+1)) + j);
             }
         }
 
         if (!(j-1 < 0)){
             if (isOpen(i, j-1)) {
-                wquf.union(p, (systemDimension * i) + (j-1));
+                wquf.union(p , (systemDimension * i) + (j-1));
             }
         }
 
         if ( !(j+1 >= systemDimension)) {
-            if(isOpen(i, j+1)){
-                wquf.union(p, (systemDimension * i) + (j+1));
+            if (isOpen(i , j+1)) {
+                wquf.union(p , (systemDimension * i) + (j+1));
             }
         }
 
@@ -164,7 +168,7 @@ public class Percolation {
 
     public static void main(String[] args) {
 
-        int siteSize = 100;
+        int siteSize = 6;
 
         Percolation percolation = new Percolation(siteSize);
 
@@ -183,6 +187,7 @@ public class Percolation {
             }
             percolation.open(p, q);
         }
+        percolation.printSystem();
     }
 
 }
