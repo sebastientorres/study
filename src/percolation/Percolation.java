@@ -72,7 +72,6 @@ public class Percolation extends WeightedQuickUnionUF{
         }
 
         system[i][j] = 1;
-        numberOfOpenSites++;
 
     }
 
@@ -148,6 +147,27 @@ public class Percolation extends WeightedQuickUnionUF{
         }
     }
 
+    public double getNumberOfOpenSites(){
+        if(numberOfOpenSites > 0){
+            return numberOfOpenSites;
+        } else {
+            for (int i = 0 ; i < systemDimension; i++){
+                for (int j = 0 ; j < systemDimension; j++){
+                    if (system[i][j] == 1){
+                        numberOfOpenSites++;
+                    }
+                }
+            }
+            return numberOfOpenSites;
+        }
+    }
+
+    public double getOpenSitePercentage(){
+
+
+        double result = Double.valueOf(getNumberOfOpenSites()) / Double.valueOf(numberOfSites);
+        return result;
+    }
 
     public static void main(String[] args){
 
@@ -187,18 +207,13 @@ public class Percolation extends WeightedQuickUnionUF{
             System.out.println("p = " + p + " q = " + q);
         }
 
+
         percolation.printSystem();
-        percolation.printWquf();
         System.out.println("\npercolation.percolates = " + percolation.percolates());
-        System.out.println("percolation.numberOfOpensites = " + percolation.numberOfOpenSites);
+        System.out.println("percolation.numberOfOpensites = " + percolation.getNumberOfOpenSites());
         System.out.println("percolation.numberOfSites = " + percolation.numberOfSites);
         System.out.println("Open sites percentage = " + percolation.getOpenSitePercentage() );
 
-    }
-
-    public double getOpenSitePercentage(){
-        double result = Double.valueOf(numberOfOpenSites) / Double.valueOf(numberOfSites);
-        return result;
     }
 
 }
