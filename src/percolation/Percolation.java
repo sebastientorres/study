@@ -21,7 +21,7 @@ public class Percolation {
     private int[][] system;
     private int numberOfOpenSites;
 
-    WeightedQuickUnionUF wquf;
+    private WeightedQuickUnionUF wquf;
 
     public Percolation(int N) {
 
@@ -119,17 +119,6 @@ public class Percolation {
         }
     }
 
-    //    @Override
-    public boolean connected(int i, int j, int k, int l){
-        i--;
-        j--;
-        k--;
-        l--;
-        int p = i * j;
-        int q = k * l;
-        return wquf.connected(p , q);
-    }
-
     private void printSystem() {
 
         for (int i = 0; i < system.length; i++) {
@@ -195,7 +184,6 @@ public class Percolation {
             }
             percolation.open(p, q);
         }
-
     }
 
 }
