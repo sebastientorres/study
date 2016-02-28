@@ -17,7 +17,7 @@ public class Percolation {
 
     public Percolation(int N) {
 
-        if ( N < =0 ) {
+        if (N <= 0) {
             throw new IllegalArgumentException("Site dimension can't be 0 or less.");
         }
 
@@ -31,35 +31,35 @@ public class Percolation {
     }
 
     private void initialiseSystem(int N) {
-        for (int i = 0; i < N; i ++) {
-            for (int j = 0; j < N; j ++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 system[i][j] = 0;
             }
         }
     }
     //    @Override
-    private boolean connected(int i, int j, int k, int l) {
-        i --;
-        j --;
-        k --;
-        l --;
+    private boolean connected(int i , int j , int k , int l) {
+        i--;
+        j--;
+        k--;
+        l--;
         int p = (i * systemDimension) + j;
         int q = (k * systemDimension) + l;
         return wquf.connected(p , q);
     }
-    public void open(int i, int j) {
+    public void open(int i , int j) {
 
         checkBoundary(i , j);
 
         // Doing [i|j]-- to address off by 1.
-        i --;
-        j --;
+        i--;
+        j--;
 
         int p = (systemDimension * i) + j;
 
         if (!(i-1 < 0)) {
             if (isOpen(i-1 , j)) {
-                wquf.union(p , ((systemDimension * (i-1)) +j ));
+                wquf.union(p , ((systemDimension * (i-1)) +j));
             }
         }
 
@@ -69,13 +69,13 @@ public class Percolation {
             }
         }
 
-        if (!(j-1 < 0)){
+        if (!(j-1 < 0)) {
             if (isOpen(i, j-1)) {
                 wquf.union(p , (systemDimension * i) + (j-1));
             }
         }
 
-        if ( !(j+1 >= systemDimension)) {
+        if (!(j+1 >= systemDimension)) {
             if (isOpen(i , j+1)) {
                 wquf.union(p , (systemDimension * i) + (j+1));
             }
@@ -85,18 +85,18 @@ public class Percolation {
 
     }
 
-    public boolean isOpen(int i, int j) {
+    public boolean isOpen(int i , int j) {
         checkBoundary(i , j);
         return system[i][j] == 1;
     }
 
-    public boolean isFull(int i, int j) {
+    public boolean isFull(int i , int j) {
         checkBoundary(i , j);
         i--;
         j--;
 
-        for (int counter = 0 ; counter < systemDimension; counter ++) {
-            if (wquf.connected((systemDimension * i) + j, counter)) {
+        for (int counter = 0; counter < systemDimension; counter++) {
+            if ( wquf.connected(( systemDimension * i) + j , counter)) {
                 return true;
             }
         }
@@ -108,9 +108,9 @@ public class Percolation {
     // i and j need to become p and q at the top and bottom of the system
 
     public boolean percolates() {
-        for (int i = 0 ; i < systemDimension; i++) {
-            for (int j = (numberOfSites - systemDimension)-1; j < numberOfSites ; j++) {
-                    if (wquf.connected(i, j)) {
+        for (int i = 0; i < systemDimension; i ++) {
+            for (int j = (numberOfSites - systemDimension) - 1; j < numberOfSites; j ++) {
+                    if (wquf.connected(i , j)) {
                         return true;
                 }
             }
@@ -118,8 +118,8 @@ public class Percolation {
         return false;
     }
 
-    private void checkBoundary(int i, int j) {
-        if (i < 0 || j < 0){
+    private void checkBoundary(int i , int j) {
+        if (i < 0 || j < 0) {
             throw new IndexOutOfBoundsException("i or j can't be less than 0");
         }
         if (i > systemDimension || j > systemDimension) {
@@ -153,8 +153,8 @@ public class Percolation {
         if (numberOfOpenSites > 0) {
             return numberOfOpenSites;
         } else {
-            for (int i = 0 ; i < systemDimension; i++) {
-                for (int j = 0 ; j < systemDimension; j++) {
+            for (int i = 0; i < systemDimension; i++) {
+                for (int j = 0; j < systemDimension; j++) {
                     if (system[i][j] == 1) {
                         numberOfOpenSites++;
                     }
@@ -178,18 +178,17 @@ public class Percolation {
             Random pRand = new Random();
             Random qRand = new Random();
 
-            int p = pRand.nextInt(siteSize+1);
-            int q = qRand.nextInt(siteSize+1);
+            int p = pRand.nextInt(siteSize + 1);
+            int q = qRand.nextInt(siteSize + 1);
 
-            if(p == 0){
+            if(p == 0) {
                 p++;
             }
-            if (q == 0){
+            if (q == 0) {
                 q++;
             }
             percolation.open(p, q);
         }
-        percolation.printSystem();
     }
 
 }
